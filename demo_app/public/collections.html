@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
+  <title>Collections</title>
   <style>
     body {
       font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
@@ -11,7 +11,7 @@
       min-height: 100vh;
     }
     .container {
-      max-width: 420px;
+      max-width: 800px;
       margin: 40px auto;
       background: #fffbe7;
       border-radius: 18px;
@@ -28,22 +28,22 @@
     }
 
     .waving-plant {
-      position: fixed;         /* changed from absolute */
+      position: fixed;
       left: 18px;
       bottom: 18px;
       font-size: 2.7em;
-      z-index: 1001;           /* higher than leaves */
+      z-index: 1001;
       animation: plantWave 2.5s ease-in-out infinite alternate;
       transform-origin: bottom center;
       pointer-events: none;
     }
 
     .waving-leaf {
-      position: fixed;         /* changed from absolute */
+      position: fixed;
       right: 22px;
       bottom: 24px;
       font-size: 2em;
-      z-index: 1001;           /* higher than leaves */
+      z-index: 1001;
       animation: leafWave 2s ease-in-out infinite alternate;
       transform-origin: bottom left;
       pointer-events: none;
@@ -94,7 +94,7 @@
       opacity: 0.18;
       pointer-events: none;
     }
-    input[type="text"], input[type="number"] {
+    input[type="text"], input[type="number"], input[type="email"], input[type="password"], select {
       width: 65%;
       padding: 10px;
       margin-right: 10px;
@@ -105,11 +105,12 @@
       transition: border 0.2s;
       outline: none;
     }
-    input[type="text"]:focus, input[type="number"]:focus {
+    input[type="text"]:focus, input[type="number"]:focus, 
+    input[type="email"]:focus, input[type="password"]:focus, select:focus {
       border: 2.5px solid #388e3c;
       background: #eaffea;
     }
-    input[type="button"], button {
+    input[type="button"], button, input[type="submit"] {
       padding: 10px 18px;
       background: linear-gradient(90deg, #b7e778 60%, #5b8c2a 100%);
       color: #fff;
@@ -121,11 +122,12 @@
       box-shadow: 0 2px 6px rgba(60,120,60,0.09);
       transition: background 0.2s, transform 0.1s;
     }
-    input[type="button"]:hover, button:hover {
+    input[type="button"]:hover, button:hover, input[type="submit"]:hover {
       background: linear-gradient(90deg, #5b8c2a 60%, #b7e778 100%);
       transform: scale(1.07);
     }
-    #palindromeResult, #fibonacciResult, #factorialResult {
+    /* Results and outputs */
+    .result, #result, #arrayResult, #setResult, #mapResult {
       margin-top: 12px;
       color: #388e3c;
       font-weight: bold;
@@ -200,7 +202,7 @@
     .shower-leaf {
       position: fixed;
       top: -40px;
-      z-index: 0; /* Lower than container */
+      z-index: 0;
       pointer-events: none;
       animation: leafShowerFall linear forwards;
       opacity: 0.85;
@@ -377,7 +379,6 @@
       color: #ffe066;
     }
     body.night .eco-sky {
-      /* Night sky */
       background: linear-gradient(180deg, #232946 60%, #395886 100%);
     }
     body.night .eco-sun {
@@ -423,20 +424,74 @@
       0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
     }
+    /* Collections specific styles */
+    .collection-section {
+      margin-bottom: 28px;
+      background: #e0ffe6;
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 6px rgba(60,120,60,0.06);
+      border: 1.5px solid #b7e778;
+      position: relative;
+    }
+    .collection-section:before {
+      content: "🌿";
+      font-size: 1.5em;
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .collection-item {
+      margin-bottom: 15px;
+      padding: 12px;
+      background: #f8fff4;
+      border-radius: 8px;
+      border: 1px dashed #b7e778;
+    }
+    .collection-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .collection-actions button {
+      padding: 8px 15px;
+      font-size: 0.9em;
+    }
+    .collection-output {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f8fff4;
+      border-radius: 8px;
+      border: 1px solid #b7e778;
+      min-height: 50px;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px 15px;
+        padding: 20px 15px;
+      }
+      input[type="text"], input[type="number"], input[type="email"], input[type="password"], select {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
   </style>
-
 </head>
 <body>
   <nav>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="basic.html">Basic</a></li>
-    <li><a href="collections.html">Collections</a></li>
-  </ul>
-</nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="basic.html">Basic</a></li>
+      <li><a href="collections.html">Collections</a></li>
+    </ul>
+  </nav>
 
   <!-- Theme Switch Button at top right -->
   <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">🌞 Switch to Night</button>
+  
   <!-- Animated Sun and Clouds -->
   <div class="eco-sky">
     <span class="eco-sun">☀️</span>
@@ -446,55 +501,272 @@
     <!-- Stars for night mode -->
     <div id="ecoStars"></div>
   </div>
+  
   <!-- Place the waving plant and leaf OUTSIDE the container -->
   <span class="waving-plant">🌱</span>
   <span class="waving-leaf">🍃</span>
+  
   <div class="container">
     <div class="math-toddles">
-      <span class="toddle" style="--delay:0s;">🧮</span>
-      <span class="toddle" style="--delay:0.2s;">🔢</span>
+      <span class="toddle" style="--delay:0s;">🧺</span>
+      <span class="toddle" style="--delay:0.2s;">🗃️</span>
       <span class="toddle" style="--delay:0.4s;">🌿</span>
       <span class="toddle" style="--delay:0.6s;">🦋</span>
       <span class="toddle" style="--delay:0.8s;">🍀</span>
     </div>
-    <h2><span class="eco-icon">🌳</span>Number Utilities<span class="eco-icon">🌻</span></h2>
-    <div class="section">
-      <h5><span class="eco-icon">🌸</span>Palindrome Checker</h5>
-      <input type="text" id="palindromeInput" placeholder="Enter the number">
-      <input type="button" value="Check" onclick="checkNumber()">
-      <div id="palindromeResult"></div>
-      <div id="palindromeDescription" class="output-description"></div>
+    
+    <h2><span class="eco-icon">🌳</span>JavaScript Collections<span class="eco-icon">🌻</span></h2>
+    
+    <!-- Array Section -->
+    <div class="collection-section">
+      <h5><span class="eco-icon">🌸</span>Array Operations</h5>
+      <div class="collection-item">
+        <input type="text" id="arrayInput" placeholder="Enter comma-separated values">
+        <input type="button" value="Create Array" onclick="createArray()">
+      </div>
+      <div class="collection-actions">
+        <button onclick="arrayPush()">Push</button>
+        <button onclick="arrayPop()">Pop</button>
+        <button onclick="arrayShift()">Shift</button>
+        <button onclick="arrayUnshift()">Unshift</button>
+        <button onclick="arraySort()">Sort</button>
+      </div>
+      <div class="collection-output" id="arrayResult">
+        Array will appear here
+      </div>
     </div>
-    <div class="section">
-      <h5><span class="eco-icon">🍃</span>Fibonacci Series</h5>
-      <input type="text" id="fibonacciInput" placeholder="Enter the number">
-      <input type="button" value="Check" onclick="checkNumber1()">
-      <div id="fibonacciResult"></div>
-      <div id="fibonacciDescription" class="output-description"></div>
+    
+    <!-- Set Section -->
+    <div class="collection-section">
+      <h5><span class="eco-icon">🍃</span>Set Operations</h5>
+      <div class="collection-item">
+        <input type="text" id="setInput" placeholder="Enter comma-separated values">
+        <input type="button" value="Create Set" onclick="createSet()">
+      </div>
+      <div class="collection-actions">
+        <button onclick="setAdd()">Add</button>
+        <button onclick="setDelete()">Delete</button>
+        <button onclick="setClear()">Clear</button>
+        <button onclick="setHas()">Has</button>
+      </div>
+      <div class="collection-output" id="setResult">
+        Set will appear here
+      </div>
     </div>
-    <div class="section">
-      <h5><span class="eco-icon">🌻</span>Factorial Calculator</h5>
-      <input type="text" id="factorialInput" placeholder="Enter the number">
-      <input type="button" value="Check" onclick="checkNumber2()">
-      <div id="factorialResult"></div>
-      <div id="factorialDescription" class="output-description"></div>
+    
+    <!-- Map Section -->
+    <div class="collection-section">
+      <h5><span class="eco-icon">🌻</span>Map Operations</h5>
+      <div class="collection-item">
+        <input type="text" id="mapKeyInput" placeholder="Key" style="width: 30%;">
+        <input type="text" id="mapValueInput" placeholder="Value" style="width: 30%;">
+        <input type="button" value="Add to Map" onclick="mapSet()">
+      </div>
+      <div class="collection-actions">
+        <button onclick="mapGet()">Get</button>
+        <button onclick="mapDelete()">Delete</button>
+        <button onclick="mapClear()">Clear</button>
+        <button onclick="mapHas()">Has</button>
+      </div>
+      <div class="collection-output" id="mapResult">
+        Map will appear here
+      </div>
     </div>
+    
     <!-- Eco Progress Bar -->
     <div class="eco-progress-bar-bg">
       <div class="eco-progress-bar" id="ecoProgress"></div>
     </div>
+    
     <!-- Fun Fact -->
     <div class="eco-fun-fact" id="ecoFunFact"></div>
+    
     <div class="footer">
       <span class="eco-icon">🌍</span>
-      Let's keep learning and keep our planet green!
+      Collections help organize data in JavaScript!
       <span class="eco-icon">🌱</span>
     </div>
   </div>
+  
   <!-- Confetti container -->
   <div id="ecoConfetti"></div>
+  
   <script>
-    // --- Confetti Animation ---
+    // --- Collections Data ---
+    let myArray = [];
+    let mySet = new Set();
+    let myMap = new Map();
+    
+    // --- Array Functions ---
+    function createArray() {
+      const input = document.getElementById('arrayInput').value;
+      if (input) {
+        myArray = input.split(',').map(item => item.trim());
+        updateArrayOutput();
+        showConfetti();
+        updateProgress();
+        showFunFact();
+      }
+    }
+    
+    function arrayPush() {
+      const input = document.getElementById('arrayInput').value;
+      if (input) {
+        myArray.push(input);
+        updateArrayOutput();
+        showConfetti();
+      }
+    }
+    
+    function arrayPop() {
+      if (myArray.length > 0) {
+        const popped = myArray.pop();
+        updateArrayOutput(`Popped: ${popped}`);
+      } else {
+        updateArrayOutput("Array is empty!");
+      }
+    }
+    
+    function arrayShift() {
+      if (myArray.length > 0) {
+        const shifted = myArray.shift();
+        updateArrayOutput(`Shifted: ${shifted}`);
+      } else {
+        updateArrayOutput("Array is empty!");
+      }
+    }
+    
+    function arrayUnshift() {
+      const input = document.getElementById('arrayInput').value;
+      if (input) {
+        myArray.unshift(input);
+        updateArrayOutput();
+        showConfetti();
+      }
+    }
+    
+    function arraySort() {
+      myArray.sort();
+      updateArrayOutput("Array sorted!");
+      showConfetti();
+    }
+    
+    function updateArrayOutput(message = "") {
+      const output = document.getElementById('arrayResult');
+      output.innerHTML = message ? `<span style="color:#388e3c">${message}</span><br>` : '';
+      output.innerHTML += `Array: [${myArray.join(', ')}] (Length: ${myArray.length})`;
+      output.classList.add('animated-output');
+      setTimeout(() => output.classList.remove('animated-output'), 1000);
+    }
+    
+    // --- Set Functions ---
+    function createSet() {
+      const input = document.getElementById('setInput').value;
+      if (input) {
+        mySet = new Set(input.split(',').map(item => item.trim()));
+        updateSetOutput();
+        showConfetti();
+        updateProgress();
+        showFunFact();
+      }
+    }
+    
+    function setAdd() {
+      const input = document.getElementById('setInput').value;
+      if (input) {
+        mySet.add(input);
+        updateSetOutput();
+        showConfetti();
+      }
+    }
+    
+    function setDelete() {
+      const input = document.getElementById('setInput').value;
+      if (input) {
+        const deleted = mySet.delete(input);
+        updateSetOutput(deleted ? "Item deleted" : "Item not found");
+      }
+    }
+    
+    function setClear() {
+      mySet.clear();
+      updateSetOutput("Set cleared!");
+    }
+    
+    function setHas() {
+      const input = document.getElementById('setInput').value;
+      if (input) {
+        const hasItem = mySet.has(input);
+        updateSetOutput(hasItem ? "Set has this item" : "Set does NOT have this item");
+      }
+    }
+    
+    function updateSetOutput(message = "") {
+      const output = document.getElementById('setResult');
+      output.innerHTML = message ? `<span style="color:#388e3c">${message}</span><br>` : '';
+      output.innerHTML += `Set: {${Array.from(mySet).join(', ')}} (Size: ${mySet.size})`;
+      output.classList.add('animated-output');
+      setTimeout(() => output.classList.remove('animated-output'), 1000);
+    }
+    
+    // --- Map Functions ---
+    function mapSet() {
+      const key = document.getElementById('mapKeyInput').value;
+      const value = document.getElementById('mapValueInput').value;
+      if (key && value) {
+        myMap.set(key, value);
+        updateMapOutput();
+        showConfetti();
+        updateProgress();
+        showFunFact();
+      }
+    }
+    
+    function mapGet() {
+      const key = document.getElementById('mapKeyInput').value;
+      if (key) {
+        const value = myMap.get(key);
+        updateMapOutput(value ? `Value for "${key}": ${value}` : `Key "${key}" not found`);
+      }
+    }
+    
+    function mapDelete() {
+      const key = document.getElementById('mapKeyInput').value;
+      if (key) {
+        const deleted = myMap.delete(key);
+        updateMapOutput(deleted ? "Key deleted" : "Key not found");
+      }
+    }
+    
+    function mapClear() {
+      myMap.clear();
+      updateMapOutput("Map cleared!");
+    }
+    
+    function mapHas() {
+      const key = document.getElementById('mapKeyInput').value;
+      if (key) {
+        const hasKey = myMap.has(key);
+        updateMapOutput(hasKey ? "Map has this key" : "Map does NOT have this key");
+      }
+    }
+    
+    function updateMapOutput(message = "") {
+      const output = document.getElementById('mapResult');
+      output.innerHTML = message ? `<span style="color:#388e3c">${message}</span><br>` : '';
+      
+      let mapContent = [];
+      myMap.forEach((value, key) => {
+        mapContent.push(`${key} => ${value}`);
+      });
+      
+      output.innerHTML += `Map: {${mapContent.join(', ')}} (Size: ${myMap.size})`;
+      output.classList.add('animated-output');
+      setTimeout(() => output.classList.remove('animated-output'), 1000);
+    }
+    
+    // --- Shared UI Functions (same as index.html) ---
+    // Confetti Animation
     function showConfetti() {
       const confettiContainer = document.getElementById('ecoConfetti');
       const isNight = document.body.classList.contains('night');
@@ -502,7 +774,7 @@
         const conf = document.createElement('span');
         conf.className = 'eco-confetti';
         if (isNight) {
-          conf.innerText = '★'; // Night mode: stars
+          conf.innerText = '★';
           conf.style.color = '#ffe066';
           conf.style.textShadow = '0 0 8px #ffe066, 0 0 16px #fff';
         } else {
@@ -517,29 +789,29 @@
       }
     }
 
-    // --- Progress Bar ---
+    // Progress Bar
     let ecoProgress = 0;
     function updateProgress() {
       ecoProgress = Math.min(ecoProgress + 10, 100);
       document.getElementById('ecoProgress').style.width = ecoProgress + '%';
     }
 
-    // --- Fun Facts ---
+    // Fun Facts
     const funFacts = [
-      "Did you know? 0 is the only number that can't be represented in Roman numerals!",
-      "A palindrome reads the same forwards and backwards, like 12321.",
-      "The Fibonacci sequence appears in pinecones and sunflowers!",
-      "Factorials grow super fast: 5! = 120, 10! = 3,628,800!",
-      "Math is everywhere in nature, from leaves to honeycombs!",
-      "Every even number greater than 2 can be written as the sum of two primes (Goldbach's conjecture).",
-      "The word 'mathematics' comes from the Greek word 'mathema' meaning 'knowledge'."
+      "Did you know? Arrays in JavaScript can hold multiple types of data at once!",
+      "Sets automatically remove duplicate values - no duplicates allowed!",
+      "Maps remember the original insertion order of their keys.",
+      "Arrays are actually objects with special length property and methods.",
+      "Sets are collections of unique values where each value can occur only once.",
+      "Maps can use any value (both objects and primitives) as keys.",
+      "The spread operator (...) is great for copying collections!"
     ];
     function showFunFact() {
       const fact = funFacts[Math.floor(Math.random()*funFacts.length)];
       document.getElementById('ecoFunFact').innerText = fact;
     }
 
-    // --- Interactive Toddles ---
+    // Interactive Toddles
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.toddle').forEach(toddle => {
         toddle.addEventListener('click', function() {
@@ -549,96 +821,7 @@
       });
     });
 
-    // --- Main Logic (with confetti, progress, fun fact) ---
-    async function checkNumber() {
-      const input = document.getElementById('palindromeInput').value;
-      const resultDiv = document.getElementById('palindromeResult');
-      const descDiv = document.getElementById('palindromeDescription');
-      if (!input) {
-        resultDiv.innerText = "Please enter a number.";
-        descDiv.innerText = "A palindrome is a number that reads the same backward as forward, like 121 or 1331.";
-        resultDiv.classList.remove('animated-output');
-        return;
-      }
-      const response = await fetch('/check-palindrome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ number: input })
-      });
-      const data = await response.json();
-      resultDiv.innerText = data.result;
-      resultDiv.classList.remove('animated-output');
-      void resultDiv.offsetWidth; // trigger reflow for animation
-      resultDiv.classList.add('animated-output');
-      // Explanation logic
-      let isPal = data.result.includes("is a palindrome");
-      if (isPal) {
-        descDiv.innerHTML = "🎉 Great! <b>" + input + "</b> reads the same forwards and backwards.<br>That makes it a palindrome!";
-        showConfetti();
-        updateProgress();
-        showFunFact();
-      } else {
-        descDiv.innerHTML = "Oops! <b>" + input + "</b> does not read the same forwards and backwards.<br>Try another number!";
-        showFunFact();
-      }
-    }
-
-    function checkNumber1() {
-      const input = document.getElementById('fibonacciInput').value;
-      const n = parseInt(input);
-      const resultDiv = document.getElementById('fibonacciResult');
-      const descDiv = document.getElementById('fibonacciDescription');
-      if (isNaN(n) || n < 1) {
-        resultDiv.innerText = "Please enter a positive integer.";
-        descDiv.innerText = "The Fibonacci sequence starts with 0 and 1. Each next number is the sum of the two before it.";
-        resultDiv.classList.remove('animated-output');
-        return;
-      }
-      let a = 0, b = 1, c;
-      let result = [a];
-      for (let i = 2; i < n; i++) {
-        c = a + b;
-        result.push(c);
-        a = b;
-        b = c;
-      }
-      if (n > 1) result.push(b);
-      resultDiv.innerText = 'Fibonacci series: ' + result.join(', ');
-      resultDiv.classList.add('animated-output');
-      void resultDiv.offsetWidth; // trigger reflow for animation
-      resultDiv.classList.remove('animated-output');
-      descDiv.innerHTML = "🌱 The Fibonacci sequence for <b>" + n + "</b> terms is shown above. Notice how each number is the sum of the two before it!";
-      showConfetti();
-      updateProgress();
-      showFunFact();
-    }
-
-    function checkNumber2() {
-      const input = document.getElementById('factorialInput').value;
-      const n = parseInt(input);
-      const resultDiv = document.getElementById('factorialResult');
-      const descDiv = document.getElementById('factorialDescription');
-      if (isNaN(n) || n < 0) {
-        resultDiv.innerText = "Please enter a non-negative integer.";
-        descDiv.innerText = "The factorial of a number n (written as n!) is the product of all positive integers up to n.";
-        resultDiv.classList.remove('animated-output');
-        return;
-      }
-      let factorial = 1;
-      for (let i = 1; i <= n; i++) {
-        factorial *= i;
-      }
-      descDiv.innerHTML = "🌻 The factorial of <b>" + n + "</b> means multiplying all numbers from 1 to " + n + ".<br>So " + n + "! = " + factorial;
-      resultDiv.classList.remove('animated-output');
-      void resultDiv.offsetWidth; // trigger reflow for animation
-      resultDiv.classList.add('animated-output');
-      resultDiv.innerText = 'Factorial: ' + factorial;
-      showConfetti(); // <-- Add this line
-      updateProgress();
-      showFunFact();
-    }
-
-    // --- Theme Toggle ---
+    // Theme Toggle
     function toggleTheme() {
       const body = document.body;
       const btn = document.getElementById('themeToggle');
@@ -657,7 +840,7 @@
       }
     }
 
-    // --- Stars for Night Mode ---
+    // Stars for Night Mode
     function showStars() {
       const ecoStars = document.getElementById('ecoStars');
       ecoStars.innerHTML = '';
@@ -680,6 +863,7 @@
       if (document.body.classList.contains('night')) showStars();
     });
 
+    // Falling leaves/stars
     window.addEventListener('load', () => {
       showFunFact();
       setInterval(() => {
@@ -688,13 +872,13 @@
         } else {
           createLeaf();
         }
-      }, 900); // Show a new leaf or star every 0.9s
+      }, 900);
     });
 
     function createStarShower() {
       const star = document.createElement('span');
       star.innerText = '★';
-      star.className = 'shower-leaf'; // reuse same animation/CSS
+      star.className = 'shower-leaf';
       star.style.left = Math.random() * 100 + 'vw';
       star.style.fontSize = (0.7 + Math.random() * 1.2) + 'em';
       star.style.animationDuration = (2 + Math.random() * 3) + 's';
